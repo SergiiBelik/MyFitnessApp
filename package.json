@@ -4,6 +4,7 @@
   "description": "fitness app",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "es6-promise": "^4.2.5",
     "express": "^4.16.3",
