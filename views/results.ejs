@@ -1,10 +1,8 @@
     <html>
         <head>
             <title>Fitness App</title>
-            <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
             <link rel="stylesheet" href="/css/main.css">
-            <script type="text/javascript" src="javascript/listcollapse.js"></script>
-            <script type="text/javascript" src="javascript/addButtonListener.js"></script>
         </head>
         <body onload="initElement();addButtonListener()">
     <!--will need to write a code in addButtonListener.js to listen to a click on Add button
@@ -12,7 +10,7 @@
 <h1>results page</h1>
 
 <% items.forEach(function(product){ %>
-        <li><span id="productName"><%= product["report"]["food"]["name"] %></span><button>Add</button>
+        <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno"><%= product["report"]["food"]["ndbno"] %></span><button>Add</button>
             <div class="hidden" id="firstRow">
                 <div id="nutrname">Nutrient</div>  
                 <span id="nutrmeasure">Per 100g</span> 
@@ -34,5 +32,7 @@
 <% }) %>
 
 <a href="/search">Search Again</a>
+            <script type="text/javascript" src="javascript/listcollapse.js"></script>
+            <script type="text/javascript" src="javascript/addButtonListener.js"></script>
         </body>
     </html>

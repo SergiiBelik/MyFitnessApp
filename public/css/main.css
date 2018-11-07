@@ -1,0 +1,47 @@
+#nutrname{
+    width: 300px;
+    margin: 0 20px 0 0;
+    float: left;
+
+}
+/*#nutrvalue{*/
+/*    width: 50px;*/
+/*    margin: 0 20px 0 0;*/
+/*    float: left;*/
+/*}*/
+
+/*#dash{*/
+/*    width: 5px;*/
+/*    margin: 0 20px 0 0;*/
+/*    float: left;*/
+/*}*/
+
+/*#othermeasures{*/
+/*    width: 50px;*/
+/*    margin: 0 20px 0 0;*/
+/*    float: left;*/
+/*}*/
+#nutrmeasure{
+    width: 50px;
+    margin-right: 20px;
+}
+#productName{
+    display: inline;
+    /*width: 100px;*/
+    margin-right: 20px;
+}
+span{
+    display: inline-block;
+    width: 100px;
+    margin-right: 20px;
+}
+
+.hidden{
+    display: none;
+}
+button{
+    display: inline;
+}
+#ndbno{
+    display: none;
+}
