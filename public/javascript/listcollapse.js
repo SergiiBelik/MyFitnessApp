@@ -1,4 +1,4 @@
-function initElement(){
+const listCollapse = () => {
 var allLi = document.getElementsByTagName('li');
 for(var i = 0; i < allLi.length; i++){
     allLi[i].addEventListener("click", function() {
@@ -24,3 +24,4 @@ for(var i = 0; i < allLi.length; i++){
   );
 }
 }
+listCollapse()
