@@ -2,6 +2,11 @@ const express = require('express')
 var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+
 //var Promise = require("bluebird");
 //var request = Promise.promisifyAll(require("request"), {multiArgs: true});
 app.use(express.static('public'))
