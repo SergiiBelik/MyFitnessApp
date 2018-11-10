@@ -7,6 +7,7 @@ mongoose.connect('mongodb://localhost/my_fitness_app')
 var passport = require("passport");
 var LocalStrategy = require("passport-local")
 const Product = require('./models/product.js')
+const combinePromises = require('./models/combinePromises.js')
 
 //var Promise = require("bluebird");
 //var request = Promise.promisifyAll(require("request"), {multiArgs: true});
@@ -15,65 +16,38 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); // support
 
 app.get("/", function(req, res){
-    // console.log(req.query.product)
-    if(typeof(req.query.product) != 'undefined'){
-    const query = req.query.product
-    let items = []
-    let urlList = []
-    let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
-    
-    request(firstURL, (error, response, body) => {
-         if(!error && response.statusCode == 200){
-            const data = JSON.parse(body)
-             //for each product lookup nutrition data
-             for(let i = 0; i < data['list']['item'].length; i++){
-                urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
-            }
-
-            combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
-                .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
-                    res.render('home.ejs', {items: response})
-                }, (error) => {
-                    console.log(error)
-                })
+    Product.find({}, (err, products) =>{
+        if(err){
+            console.log(err)
+        } else {
+            res.render('home.ejs', {products: products})
         }
     })
-
-        const combinePromises = (context) => {
-        return Promise.all(
-            context.map((url) => {  
-            return new Promise((resolve, reject) => {    
-              try{
-                request({
-                  url: url,
-                }, (err, response, body) => {
-                  if(err){
-                    reject(err);
-                  }else{
-                    context = JSON.parse(body)
-                    resolve(context)
-                  }
-                })     
-              }catch(error){
-                reject(error);
-              }    
-            })
-          })
-        )
-      }
-}else{
-        res.render('home.ejs')
-}
 })
 
+app.post('/', (req, res) => {
+    const ndbno = req.body.add
+    const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
+    request(url, (error, response, body) => {
+      if(!error && response.statusCode == 200){
+          const data = JSON.parse(body)
+          Product.create(data, (err, data) => {
+            if(err){
+                console.log(err)
+            } else {
+                res.redirect('/')
+            }
+            })
+      } else {
+          console.log(error)
+      }
 
-app.get("/search", function(req, res){
-   res.render("search.ejs");
-});
+    })
+})
 
-app.get("/test", function(req, res){
-   res.render("test.ejs");
-});
+app.get('/search', (req, res) => {
+    res.render('search.ejs')
+})
 
 app.get('/results', (req, res) => {
     const query = req.query.product
@@ -82,45 +56,20 @@ app.get('/results', (req, res) => {
     let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
     
     request(firstURL, (error, response, body) => {
-         if(!error && response.statusCode == 200){
-            const data = JSON.parse(body)
-             //for each product lookup nutrition data
-             for(let i = 0; i < data['list']['item'].length; i++){
-                urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
-            }
-
-            combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
-                .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
-                    res.render('results.ejs', {items: response})
+      if(!error && response.statusCode == 200){
+        const data = JSON.parse(body)
+        //for each product lookup nutrition data
+        for(let i = 0; i < data['list']['item'].length; i++){
+          urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
+        }
+        combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
+            .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
+                res.render('results.ejs', {items: response})
                 }, (error) => {
                     console.log(error)
                 })
         }
     })
-
-        const combinePromises = (context) => {
-        return Promise.all(
-            context.map((url) => {  
-            return new Promise((resolve, reject) => {    
-              try{
-                request({
-                  url: url,
-                }, (err, response, body) => {
-                  if(err){
-                    reject(err);
-                  }else{
-                    context = JSON.parse(body)
-                    resolve(context)
-                  }
-                })     
-              }catch(error){
-                reject(error);
-              }    
-            })
-          })
-        )
-      }
-
 })
     
 app.listen(process.env.PORT, process.env.IP, () => console.log('Fitness app has been started!'))

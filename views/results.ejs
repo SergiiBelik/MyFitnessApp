@@ -10,7 +10,10 @@
 <h1>results page</h1>
 
 <% items.forEach(function(product){ %>
-        <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno"><%= product["report"]["food"]["ndbno"] %></span><button>Add</button>
+        <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno">
+          <form action='/' method='POST'>
+              <button name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
+          </form>
             <div class="hidden" id="firstRow">
                 <div id="nutrname">Nutrient</div>  
                 <span id="nutrmeasure">Per 100g</span> 

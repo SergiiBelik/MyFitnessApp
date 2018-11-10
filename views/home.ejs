@@ -6,10 +6,13 @@
   </head>
     <body>
       <h1>Home Page</h1>
-        <form action="/" method="GET">
-          <input type="text" placeholder="product" name="product">
-          <input type="Submit">
-        </form>
+        <button id='add'>Add</button>
+        <% products.forEach((product) => {%>
+              <li><%= product.report.food.name%></li>
+        
+        <% })%>
+        
+        
       <div id='products-container'>
         <% if (typeof(items) != 'undefined'){ %>
                 <% items.forEach(function(product){ %>
@@ -35,9 +38,7 @@
 <% } %>
 
       </div>  
-      <p>test</p>
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
-      <script type="text/javascript" src="javascript/addButtonListener.js"></script>
-      <!--<script src='javascript/appendChild.js'></script>-->
+      <script type="text/javascript" src='javascript/addNewProduct.js'></script>
     </body>
 </html>

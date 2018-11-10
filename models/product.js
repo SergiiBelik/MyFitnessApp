@@ -1,21 +1,34 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-    ndbno: Number,
-    name: String,
-    nutrients: [{
-        nutrient_id: Number,
-        name: String,
-        unit: String,
-        value: Number,
-        measures: [{
-            label: String,
-            value: Number,
-            qty: String,
-            eqv: Number,
-            eunit: String
-        }]
-    }]
+    report: {
+        sr: Number,
+        food: {
+            ndbno: Number,
+            name: String,
+            ds: String,
+            manu: String,
+            ru: String,
+            nutrients: [
+              {
+                nutrient_id: Number,
+                name: String,
+                derivation: String,
+                group: String,
+                unit: String,
+                value: String,
+                measures: [
+                  {
+                    label: String,
+                    eqv: Number,
+                    eunit: String,
+                    qty: Number,
+                    value: String
+                }]
+            }]
+        },
+        footnotes: []
+    }
 })
 
 module.exports = mongoose.model('Product', productSchema)
