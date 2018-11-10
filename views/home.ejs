@@ -11,6 +11,7 @@
           <input type="Submit">
         </form>
       <div id='products-container'>
+        <% if (typeof(items) != 'undefined'){ %>
                 <% items.forEach(function(product){ %>
         <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno"><%= product["report"]["food"]["ndbno"] %></span><button>Add</button>
             <div class="hidden" id="firstRow">
@@ -28,9 +29,10 @@
                 <span><%= measure.value%><%= measure.eunit%></span>
                 <% }) %>
             </div>
-            <% }); %>
+            <% }) %>
         </li>
 <% }) %>
+<% } %>
 
       </div>  
       <p>test</p>

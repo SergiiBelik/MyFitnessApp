@@ -5,31 +5,14 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 mongoose.connect('mongodb://localhost/my_fitness_app')
 var passport = require("passport");
-var LocalStrategy = require("passport-local");
+var LocalStrategy = require("passport-local")
+const Product = require('./models/product.js')
 
 //var Promise = require("bluebird");
 //var request = Promise.promisifyAll(require("request"), {multiArgs: true});
 app.use(express.static('public'))
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); // support
-const productSchema = new mongoose.Schema({
-    ndbno: Number,
-    name: String,
-    nutrients: [{
-        nutrient_id: Number,
-        name: String,
-        unit: String,
-        value: Number,
-        measures: [{
-            label: String,
-            value: Number,
-            qty: String,
-            eqv: Number,
-            eunit: String
-        }]
-    }]
-})
-const Product = mongoose.model('Product', productSchema)
 
 app.get("/", function(req, res){
     // console.log(req.query.product)
