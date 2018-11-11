@@ -5,8 +5,7 @@
             <link rel="stylesheet" href="/css/main.css">
         </head>
         <body onload="initElement();addButtonListener()">
-    <!--will need to write a code in addButtonListener.js to listen to a click on Add button
-    and then grab Li element it is in and then push it to dailyFoods array and finally redirect to home page-->
+
 <h1>results page</h1>
 
 <% items.forEach(function(product){ %>
@@ -37,5 +36,6 @@
 <a href="/search">Search Again</a>
             <script type="text/javascript" src="javascript/listcollapse.js"></script>
             <script type="text/javascript" src="javascript/addButtonListener.js"></script>
+            <script type="text/javascript" src="javascript/returnProductToParent.js"></script>
         </body>
     </html>

@@ -1,10 +1,43 @@
 <html>
-    <head>
-    </head>
-    <body>
+        <head>
+            <title>Fitness App</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/css/main.css">
+        </head>
+        <body>
         <form action="/results" method="GET">
             <input type="text" placeholder="product" name="product">
             <input type="Submit">
         </form>
-    </body>
-</html>
+        <% if(typeof(items) != 'undefined') {%>
+        <% items.forEach(function(product){ %>
+                <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno">
+                  <form action='/' method='POST'>
+                      <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
+                  </form>
+                    <div class="hidden" id="firstRow">
+                        <div id="nutrname">Nutrient</div>  
+                        <span id="nutrmeasure">Per 100g</span> 
+                        <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                            <span><%= measure.qty %> <%= measure.label %></span>
+                        <% }) %>
+                    </div>
+                    <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                    <div class="hidden">
+                        <p id="nutrname"><%= nutrient.name %></p> - 
+                        <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                        <% nutrient["measures"].forEach(function(measure){ %>
+                        <span><%= measure.value%><%= measure.eunit%></span>
+                        <% }) %>
+                    </div>
+                    <% }); %>
+                </li>
+        
+        <% }) %>
+        <% } %>
+        
+        <h1>THIS IS SEARCH.JS PAGE</h1>
+        <a href="/search">Search Again</a>
+        <script type="text/javascript" src="javascript/listcollapse.js"></script>
+        </body>
+    </html>

@@ -11,33 +11,7 @@
               <li><%= product.report.food.name%></li>
         
         <% })%>
-        
-        
-      <div id='products-container'>
-        <% if (typeof(items) != 'undefined'){ %>
-                <% items.forEach(function(product){ %>
-        <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno"><%= product["report"]["food"]["ndbno"] %></span><button>Add</button>
-            <div class="hidden" id="firstRow">
-                <div id="nutrname">Nutrient</div>  
-                <span id="nutrmeasure">Per 100g</span> 
-                <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
-                    <span><%= measure.qty %> <%= measure.label %></span>
-                <% }) %>
-            </div>
-            <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
-            <div class="hidden">
-                <p id="nutrname"><%= nutrient.name %></p> - 
-                <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
-                <% nutrient["measures"].forEach(function(measure){ %>
-                <span><%= measure.value%><%= measure.eunit%></span>
-                <% }) %>
-            </div>
-            <% }) %>
-        </li>
-<% }) %>
-<% } %>
 
-      </div>  
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
       <script type="text/javascript" src='javascript/addNewProduct.js'></script>
     </body>

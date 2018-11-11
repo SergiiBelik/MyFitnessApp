@@ -35,7 +35,7 @@ app.post('/', (req, res) => {
             if(err){
                 console.log(err)
             } else {
-                res.redirect('/')
+                res.redirect('/productsAdded')
             }
             })
       } else {
@@ -49,12 +49,16 @@ app.get('/search', (req, res) => {
     res.render('search.ejs')
 })
 
+app.get('/productsAdded', (req, res) => {
+    res.render('productsAdded.ejs')
+})
+
 app.get('/results', (req, res) => {
     const query = req.query.product
     let items = []
     let urlList = []
     let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
-    
+    if(typeof(req.query.product) != 'undefined'){
     request(firstURL, (error, response, body) => {
       if(!error && response.statusCode == 200){
         const data = JSON.parse(body)
@@ -64,12 +68,13 @@ app.get('/results', (req, res) => {
         }
         combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
             .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
-                res.render('results.ejs', {items: response})
+                res.render('search.ejs', {items: response})
                 }, (error) => {
                     console.log(error)
                 })
         }
     })
+    }
 })
     
 app.listen(process.env.PORT, process.env.IP, () => console.log('Fitness app has been started!'))
