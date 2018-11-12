@@ -5,15 +5,26 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 mongoose.connect('mongodb://localhost/my_fitness_app')
 var passport = require("passport");
-var LocalStrategy = require("passport-local")
+var localStrategy = require("passport-local")
+const passportLocalMongoose = require('passport-local-mongoose')
 const Product = require('./models/product.js')
+const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
 
-//var Promise = require("bluebird");
-//var request = Promise.promisifyAll(require("request"), {multiArgs: true});
+app.use(require('express-session')({
+    secret: 'stay healthy',
+    resave: false,
+    saveUninitialized: false
+}))
+
 app.use(express.static('public'))
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); // support
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 app.get("/", function(req, res){
     Product.find({}, (err, products) =>{
@@ -25,6 +36,8 @@ app.get("/", function(req, res){
     })
 })
 
+ 
+
 app.post('/', (req, res) => {
     const ndbno = req.body.add
     const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
@@ -35,7 +48,7 @@ app.post('/', (req, res) => {
             if(err){
                 console.log(err)
             } else {
-                res.redirect('/productsAdded')
+                res.redirect('/search')
             }
             })
       } else {
