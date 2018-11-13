@@ -11,11 +11,9 @@
       </div>
       
         <button id='add'>Add</button>
-        <li><%= user.username%></li>
-        <!--products.forEach((product) => {-->
-        <!--      <li> product.report.food.name%></li>-->
-        
-        <!-- })-->
+        <% user.products.forEach(function(product){%>
+              <li><%= product.report.food.name%></li>
+        <% }) %>
 
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
       <script type="text/javascript" src='javascript/addNewProduct.js'></script>

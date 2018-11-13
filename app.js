@@ -35,11 +35,12 @@ app.get('/', (req, res) => {
 })
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
-    User.findOne(req.currentUser).populate('products').exec((err, user) => {
+    User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
             console.log(err)
         } else {
             res.render('myHomePage.ejs', {user: user})
+            console.log(user)
         }
     })
     // Product.find({}, (err, products) =>{
@@ -89,7 +90,7 @@ app.post('/myhomepage', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           Product.create(data, (err, product) => {
-              User.findOne(req.currentUser, (err, user) => {
+              User.findOne(req.user, (err, user) => {
                 if(err){
                     console.log(err)
                 } else {
