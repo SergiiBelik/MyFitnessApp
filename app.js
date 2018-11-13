@@ -1,15 +1,15 @@
 const express = require('express')
-var app = express();
-var request = require("request");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost/my_fitness_app')
-var passport = require("passport");
-var localStrategy = require("passport-local")
+const app = express()
+const request = require("request");
+const bodyParser = require("body-parser")
+const mongoose = require("mongoose")
+const passport = require("passport")
+const localStrategy = require("passport-local")
 const passportLocalMongoose = require('passport-local-mongoose')
 const Product = require('./models/product.js')
 const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
+mongoose.connect('mongodb://localhost/my_fitness_app')
 
 app.use(require('express-session')({
     secret: 'stay healthy',
@@ -18,27 +18,61 @@ app.use(require('express-session')({
 }))
 
 app.use(express.static('public'))
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: false })); // support
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(passport.initialize())
 app.use(passport.session())
 
+passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-app.get("/", function(req, res){
+app.get('/', (req, res) => {
+    res.render('home.ejs')
+})
+
+app.get("/myhomepage", isLoggedIn, function(req, res){
     Product.find({}, (err, products) =>{
         if(err){
             console.log(err)
         } else {
-            res.render('home.ejs', {products: products})
+            res.render('myHomePage.ejs', {products: products})
         }
     })
 })
 
- 
+app.get('/register', (req, res) => {
+    res.render('register.ejs')
+})
 
-app.post('/', (req, res) => {
+app.post('/register', (req, res) => {
+    User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+        if(err){
+            console.log(err)
+            return res.render('register.ejs')
+        }
+        passport.authenticate('local')(req, res, () => {
+                res.redirect('/myhomepage')
+            })
+    })
+})
+
+app.get('/login', (req, res) => {
+    res.render('login.ejs')
+})
+
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/myhomepage',
+    failureRedirect: '/login'
+}), (req, res) => {
+})
+
+app.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/')
+})
+
+app.post('/myhomepage', isLoggedIn, (req, res) => {
     const ndbno = req.body.add
     const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
     request(url, (error, response, body) => {
@@ -58,7 +92,7 @@ app.post('/', (req, res) => {
     })
 })
 
-app.get('/search', (req, res) => {
+app.get('/search', isLoggedIn, (req, res) => {
     res.render('search.ejs')
 })
 
@@ -66,7 +100,7 @@ app.get('/productsAdded', (req, res) => {
     res.render('productsAdded.ejs')
 })
 
-app.get('/results', (req, res) => {
+app.get('/results', isLoggedIn, (req, res) => {
     const query = req.query.product
     let items = []
     let urlList = []
@@ -89,5 +123,12 @@ app.get('/results', (req, res) => {
     })
     }
 })
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect('/login')
+}
     
 app.listen(process.env.PORT, process.env.IP, () => console.log('Fitness app has been started!'))

@@ -5,6 +5,7 @@
             <link rel="stylesheet" href="/css/main.css">
         </head>
         <body>
+            <a link='/logout'>Sign out</a>
         <form action="/results" method="GET">
             <input type="text" placeholder="product" name="product">
             <input type="Submit">
@@ -12,7 +13,7 @@
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
                 <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno">
-                  <form action='/' method='POST'>
+                  <form action='/myhomepage' method='POST'>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
                   </form>
                     <div class="hidden" id="firstRow">
