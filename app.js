@@ -11,34 +11,44 @@ const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
 mongoose.connect('mongodb://localhost/my_fitness_app')
 
+
+app.use(express.static('public'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+
+//PASSPORT CONFIGURATION
 app.use(require('express-session')({
     secret: 'stay healthy',
     resave: false,
     saveUninitialized: false
 }))
-
-app.use(express.static('public'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(passport.initialize())
 app.use(passport.session())
-
 passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
+
+
 
 app.get('/', (req, res) => {
     res.render('home.ejs')
 })
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
-    Product.find({}, (err, products) =>{
+    User.findOne(req.currentUser).populate('products').exec((err, user) => {
         if(err){
             console.log(err)
         } else {
-            res.render('myHomePage.ejs', {products: products})
+            res.render('myHomePage.ejs', {user: user})
         }
     })
+    // Product.find({}, (err, products) =>{
+    //     if(err){
+    //         console.log(err)
+    //     } else {
+    //         res.render('myHomePage.ejs', {products: products})
+    //     }
+    // })
 })
 
 app.get('/register', (req, res) => {
@@ -78,13 +88,23 @@ app.post('/myhomepage', isLoggedIn, (req, res) => {
     request(url, (error, response, body) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
-          Product.create(data, (err, data) => {
-            if(err){
-                console.log(err)
-            } else {
-                res.redirect('/search')
-            }
-            })
+          Product.create(data, (err, product) => {
+              User.findOne(req.currentUser, (err, user) => {
+                if(err){
+                    console.log(err)
+                } else {
+                    user.products.push(product)
+                    user.save((err, data) => {
+                        if(err){
+                            console.log(err)
+                        } else {
+                            res.redirect('/search' )
+                            // console.log(data)
+                        }
+                    })
+                    }
+              })
+          })
       } else {
           console.log(error)
       }
