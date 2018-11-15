@@ -43,13 +43,6 @@ app.get("/myhomepage", isLoggedIn, function(req, res){
             console.log(user)
         }
     })
-    // Product.find({}, (err, products) =>{
-    //     if(err){
-    //         console.log(err)
-    //     } else {
-    //         res.render('myHomePage.ejs', {products: products})
-    //     }
-    // })
 })
 
 app.get('/register', (req, res) => {

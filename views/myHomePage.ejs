@@ -10,12 +10,23 @@
           <a href='/logout'>Sign out</a>
       </div>
       
-        <button id='add'>Add</button>
+        <div id='breakfast'>
+          <button id='breakfast'>Add</button>
+        </div>
+        <div id='lunch'>
+          <button id='lunch'>Add</button>
+        </div>
+        <div id='dinner'>
+          <button id='dinner'>Add</button>
+        </div>
+
+        
         <% user.products.forEach(function(product){%>
               <li><%= product.report.food.name%></li>
         <% }) %>
 
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
       <script type="text/javascript" src='javascript/addNewProduct.js'></script>
+      <script src="bundle.js"></script>
     </body>
 </html>
