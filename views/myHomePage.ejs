@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <title>Fitness App</title>
@@ -14,7 +15,8 @@
           <button id='breakfast'>Add</button>
             <% user.products.forEach(function(product){%>
               <% if(product.report.when == 'breakfast'){ %>
-                <li><%= product.report.food.name%></li>
+              <% let d = new Date(product.report.date)%>
+                <li><%= product.report.food.name%> - <%= d.getDate()%></li>
               <% }%>
             <% }) %>
         </div>

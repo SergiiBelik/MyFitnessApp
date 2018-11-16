@@ -9,6 +9,7 @@ const passportLocalMongoose = require('passport-local-mongoose')
 const Product = require('./models/product.js')
 const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
+var moment = require('moment')
 mongoose.connect('mongodb://localhost/my_fitness_app')
 
 
@@ -83,6 +84,7 @@ app.post('/myhomepage_breakfast', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'breakfast'
+          data.report.date = new Date()
           Product.create(data, (err, product) => {
               User.findOne(req.user, (err, user) => {
                 if(err){

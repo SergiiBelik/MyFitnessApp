@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     report: {
         sr: Number,
+        date: Date,
         when: String,
         food: {
             ndbno: Number,
