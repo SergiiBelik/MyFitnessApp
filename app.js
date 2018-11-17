@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
     let day = req.query.calendar
+    // console.log(typeof(day))
     User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
             console.log(err)
@@ -117,6 +118,7 @@ app.post('/myhomepage_lunch', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'lunch'
+          data.report.date = new Date()
           Product.create(data, (err, product) => {
               User.findOne(req.user, (err, user) => {
                 if(err){
@@ -148,6 +150,7 @@ app.post('/myhomepage_dinner', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'dinner'
+          data.report.date = new Date()
           Product.create(data, (err, product) => {
               User.findOne(req.user, (err, user) => {
                 if(err){
