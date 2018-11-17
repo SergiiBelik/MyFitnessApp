@@ -23,7 +23,27 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                            
+                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% } else {%>
@@ -31,7 +51,27 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                            
+                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% }%>
@@ -44,7 +84,29 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'lunch' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                            
+                            
+                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% } else {%>
@@ -52,7 +114,27 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'lunch' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                            
+                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% }%>
@@ -65,7 +147,27 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'dinner' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                            
+                                  <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% } else {%>
@@ -73,7 +175,26 @@
                     <% user.products.forEach(function(product){%>
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'dinner' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
-                            <li><%= product.report.food.name%> - <%= d.getDate()%></li>
+                            <li>
+                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                  <div class="hidden" id="firstRow">
+                                      <div id="nutrname">Nutrient</div>  
+                                      <span id="nutrmeasure">Per 100g</span> 
+                                      <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
+                                          <span><%= measure.qty %> <%= measure.label %></span>
+                                      <% }) %>
+                                  </div>
+                                  <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
+                                  <div class="hidden">
+                                      <p id="nutrname"><%= nutrient.name %></p> - 
+                                      <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
+                                      <% nutrient["measures"].forEach(function(measure){ %>
+                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <% }) %>
+                                  </div>
+                                  <% }); %>
+                            
+                            </li>
                         <% }%>
                     <% }) %>
                 <% }%>

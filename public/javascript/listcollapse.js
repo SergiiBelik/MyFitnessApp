@@ -8,12 +8,12 @@ for(var i = 0; i < allLi.length; i++){
             var currentState = childList[j].style.display;
             var tagName = childList[j].tagName;
             var tagId = childList[j].id;
-            if(tagName == "BUTTON" || tagId == "productName"){
+            if(tagId == "addForm" || tagId == "productName"){
                 childList[j].style.display="inline"
             }
-            else if(tagId == "firstRow"){
-                childList[j].style.display="block-inline"
-            }
+            // else if(tagId == "firstRow"){
+            //     childList[j].style.display="block-inline"
+            // }
             else if(currentState=="none" || currentState==""){
                 childList[j].style.display="block";
             }else{
