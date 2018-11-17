@@ -3,13 +3,17 @@ const EventEmitter = require('events')
 class MyEventEmitterObject extends EventEmitter {
     constructor() {
         super();
-        document.getElementById('breakfast').addEventListener('click', () => this.emit('button', 'breakfast' ))
-        document.getElementById('lunch').addEventListener('click', () => this.emit('button', 'lunch' ))
-        document.getElementById('dinner').addEventListener('click', () => this.emit('button', 'dinner' ))
+        document.getElementById('yesterday').addEventListener('click', () => this.emit('yesterday', 'yesterday' ))
+        document.getElementById('today').addEventListener('click', () => this.emit('today', 'today' ))
     }
 }
 
 let myEmitter = new MyEventEmitterObject()
-myEmitter.on('button', (what) => {
+
+myEmitter.on('yesterday', (what) => {
+  console.log(`you clicked ${what} button`)
+})
+
+myEmitter.on('today', (what) => {
   console.log(`you clicked ${what} button`)
 })

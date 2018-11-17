@@ -36,12 +36,14 @@ app.get('/', (req, res) => {
 })
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
+    let day = req.query.day
+    console.log(day)
     User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
             console.log(err)
         } else {
-            res.render('myHomePage.ejs', {user: user})
-            console.log(user)
+            res.render('myHomePage.ejs', {user: user, day: day})
+            // console.log(user)
         }
     })
 })
