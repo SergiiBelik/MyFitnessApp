@@ -9,7 +9,7 @@ const passportLocalMongoose = require('passport-local-mongoose')
 const Product = require('./models/product.js')
 const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
-var moment = require('moment')
+const flatpickr = require('flatpickr')
 mongoose.connect('mongodb://localhost/my_fitness_app')
 
 
@@ -36,8 +36,7 @@ app.get('/', (req, res) => {
 })
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
-    let day = req.query.day
-    console.log(day)
+    let day = req.query.calendar
     User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
             console.log(err)

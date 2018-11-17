@@ -3,6 +3,8 @@
     <title>Fitness App</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
       <link rel="stylesheet" href="/css/main.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
     <body>
       <h1>Home Page</h1>
@@ -13,13 +15,13 @@
           <h2>Breakfast</h2>
           <button id='breakfast'>Add</button>
           <form action='/myhomepage' method='GET'>
-            <button id='yesterday' name='day' value='yesterday'>yesterday</button>
-            <button id='today' name='day' value='today'>today</button>
+            <input type='text' name='calendar' id='calendar' placeholder='Pick a date'>
+            <input type='Submit' value='GO!'>
           </form>
             <% user.products.forEach(function(product){%>
-              <% let dateToday = new Date()%>
+              <% let pickedDate = new Date(day)%>
               <% let d = new Date(product.report.date)%>
-              <% if(product.report.when == 'breakfast' && (d.getDate() == dateToday.getDate() || day == 'yesterday')){ %>
+              <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
                 <li><%= product.report.food.name%> - <%= d.getDate()%></li>
               <% }%>
             <% }) %>
@@ -45,9 +47,10 @@
 
 
 
-
+      <script>
+        flatpickr("#calendar", {})
+      </script>
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
       <script type="text/javascript" src='javascript/addNewProduct.js'></script>
-      <!--<script type="text/javascript" src="javascript/calendar.js"></script>-->
     </body>
 </html>
