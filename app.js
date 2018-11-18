@@ -36,7 +36,12 @@ app.get('/', (req, res) => {
 })
 
 app.get("/myhomepage", isLoggedIn, function(req, res){
-    let day = req.query.calendar
+    let day
+    if(typeof(req.query.calendar) == 'undefined'){
+        day = new Date().toLocaleDateString()
+    } else {
+        day = req.query.calendar
+    }
     // console.log(typeof(day))
     User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
@@ -200,6 +205,9 @@ app.get('/results_breakfast', isLoggedIn, (req, res) => {
     request(firstURL, (error, response, body) => {
       if(!error && response.statusCode == 200){
         const data = JSON.parse(body)
+        if(data.errors && data.errors.error != 'undefined'){
+            res.render('productNotFound.ejs', {data: data, redirect: '/breakfast'})
+        } else {
         //for each product lookup nutrition data
         for(let i = 0; i < data['list']['item'].length; i++){
           urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
@@ -211,6 +219,7 @@ app.get('/results_breakfast', isLoggedIn, (req, res) => {
                     console.log(error)
                 })
         }
+      }
     })
     }
 })
@@ -224,6 +233,9 @@ app.get('/results_lunch', isLoggedIn, (req, res) => {
     request(firstURL, (error, response, body) => {
       if(!error && response.statusCode == 200){
         const data = JSON.parse(body)
+        if(data.errors && data.errors.error != 'undefined'){
+            res.render('productNotFound.ejs', {data: data, redirect: '/lunch'})
+        } else {
         //for each product lookup nutrition data
         for(let i = 0; i < data['list']['item'].length; i++){
           urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
@@ -235,6 +247,7 @@ app.get('/results_lunch', isLoggedIn, (req, res) => {
                     console.log(error)
                 })
         }
+      }
     })
     }
 })
@@ -248,6 +261,9 @@ app.get('/results_dinner', isLoggedIn, (req, res) => {
     request(firstURL, (error, response, body) => {
       if(!error && response.statusCode == 200){
         const data = JSON.parse(body)
+        if(data.errors && data.errors.error != 'undefined'){
+            res.render('productNotFound.ejs', {data: data, redirect: '/dinner'})
+        } else {
         //for each product lookup nutrition data
         for(let i = 0; i < data['list']['item'].length; i++){
           urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
@@ -259,6 +275,7 @@ app.get('/results_dinner', isLoggedIn, (req, res) => {
                     console.log(error)
                 })
         }
+      }
     })
     }
 })

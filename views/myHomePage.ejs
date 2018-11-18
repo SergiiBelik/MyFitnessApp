@@ -8,8 +8,9 @@
   </head>
     <body>
       <h1>Home Page</h1>
+      <h2><%= day%></h2>
       <div>
-          <a href='/logout'>Sign out</a>
+          <a href='/logout' style="position: absolute;top: 0px;right: 10px;">Sign out</a>
       </div>
       <form action='/myhomepage' method='GET'>
         <input type='text' name='calendar' id='calendar' placeholder='Pick a date'>
@@ -203,7 +204,7 @@
 
 
       <script>
-        flatpickr("#calendar", {})
+        flatpickr("#calendar", {dateFormat: "m/d/Y"})
       </script>
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
       <script type="text/javascript" src='javascript/addNewProduct.js'></script>

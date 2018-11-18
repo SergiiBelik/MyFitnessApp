@@ -5,15 +5,14 @@
             <link rel="stylesheet" href="/css/main.css">
         </head>
         <body>
-            <a link='/logout'>Sign out</a>
         <form action="/results_dinner" method="GET">
-            <input type="text" placeholder="product" name="product">
+            <input type="text" placeholder="Enter product here" name="product">
             <input type="Submit">
         </form>
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
-                <li><span id="productName"><%= product["report"]["food"]["name"] %></span> <span id="ndbno">
-                  <form action='/myhomepage_dinner' method='POST'>
+                <li><span id="productName"><%= product["report"]["food"]["name"] %></span>
+                  <form action='/myhomepage_dinner' method='POST' id='addForm'>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
                   </form>
                     <div class="hidden" id="firstRow">
@@ -36,8 +35,7 @@
         
         <% }) %>
         <% } %>
-        <h1>THIS IS SEARCH.JS PAGE</h1>
-        <a href="/search">Search Again</a>
+
         <script type="text/javascript" src="javascript/onLoad.js"></script>
         <script type="text/javascript" src="javascript/listcollapse.js"></script>
         </body>
