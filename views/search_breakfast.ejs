@@ -13,6 +13,11 @@
         <% items.forEach(function(product){ %>
                 <li><span id="productName"><%= product["report"]["food"]["name"] %></span>
                   <form action='/myhomepage_breakfast' method='POST' id='addForm'>
+                      <input name='amount' type='number'> 
+                      <select name='measure'>
+                          <option value='g'>g</option>
+                          <option value='oz'>oz</option>
+                      </select>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
                   </form>
                     <div class="hidden" id="firstRow">

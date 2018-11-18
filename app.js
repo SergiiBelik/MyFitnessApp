@@ -87,11 +87,15 @@ app.get('/logout', (req, res) => {
 app.post('/myhomepage_breakfast', isLoggedIn, (req, res) => {
     const ndbno = req.body.add
     const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
+    
     request(url, (error, response, body) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'breakfast'
           data.report.date = new Date()
+          data.report.amount = req.body.amount
+          data.report.measure = req.body.measure
+
           Product.create(data, (err, product) => {
               User.findOne(req.user, (err, user) => {
                 if(err){

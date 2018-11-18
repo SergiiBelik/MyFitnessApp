@@ -5,6 +5,8 @@ const productSchema = new mongoose.Schema({
         sr: Number,
         date: Date,
         when: String,
+        amount: Number,
+        measure: String,
         food: {
             ndbno: Number,
             name: String,

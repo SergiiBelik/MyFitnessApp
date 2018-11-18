@@ -26,7 +26,7 @@
                         <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
                             <li>
                             
-                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                <span id="productName"><%= product["report"]["food"]["name"]%> </span>
                                   <div class="hidden" id="firstRow">
                                       <div id="nutrname">Nutrient</div>  
                                       <span id="nutrmeasure">Per 100g</span> 
@@ -54,7 +54,7 @@
                         <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
                             <li>
                             
-                                <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                                <span id="productName"><%= product["report"]["food"]["name"] %> - <%=product.report.amount%><%=product.report.measure%></span>
                                   <div class="hidden" id="firstRow">
                                       <div id="nutrname">Nutrient</div>  
                                       <span id="nutrmeasure">Per 100g</span> 
