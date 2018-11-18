@@ -10,12 +10,14 @@ const Product = require('./models/product.js')
 const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
 const flatpickr = require('flatpickr')
+const methodOverride = require('method-override')
 mongoose.connect('mongodb://localhost/my_fitness_app')
 
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(methodOverride('_method'))
 
 //PASSPORT CONFIGURATION
 app.use(require('express-session')({
@@ -42,13 +44,23 @@ app.get("/myhomepage", isLoggedIn, function(req, res){
     } else {
         day = req.query.calendar
     }
-    // console.log(typeof(day))
+    
     User.findOne(req.user).populate('products').exec((err, user) => {
         if(err){
             console.log(err)
         } else {
             res.render('myHomePage.ejs', {user: user, day: day})
             // console.log(user)
+        }
+    })
+})
+
+app.delete('/myhomepage', isLoggedIn, function(req, res){
+    Product.findByIdAndRemove(req.body.remove, (err) => {
+        if(err){
+            res.redirect('back')
+        } else {
+            res.redirect('back')
         }
     })
 })

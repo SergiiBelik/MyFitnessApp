@@ -29,7 +29,7 @@
                     </div>
                     <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
                     <div class="hidden">
-                        <p id="nutrname"><%= nutrient.name %></p> - 
+                        <p id="nutrname"><%= nutrient.name %></p>
                         <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
                         <% nutrient["measures"].forEach(function(measure){ %>
                         <span><%= measure.value%><%= measure.eunit%></span>
