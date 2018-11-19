@@ -11,8 +11,14 @@
         </form>
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
-                <li><span id="productName"><%= product["report"]["food"]["name"] %></span>
+                <li>
+                    <span id="productName"><%= product["report"]["food"]["name"] %></span>
                   <form action='/myhomepage_lunch' method='POST' id='addForm'>
+                      <input name='amount' type='number'> 
+                      <select name='measure'>
+                          <option value='g'>g</option>
+                          <option value='oz'>oz</option>
+                      </select>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
                   </form>
                     <div class="hidden" id="firstRow">
@@ -24,13 +30,14 @@
                     </div>
                     <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
                     <div class="hidden">
-                        <p id="nutrname"><%= nutrient.name %></p> - 
+                        <p id="nutrname"><%= nutrient.name %></p>
                         <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
                         <% nutrient["measures"].forEach(function(measure){ %>
                         <span><%= measure.value%><%= measure.eunit%></span>
                         <% }) %>
                     </div>
                     <% }); %>
+                    
                 </li>
         
         <% }) %>

@@ -11,7 +11,8 @@
         </form>
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
-                <li><span id="productName"><%= product["report"]["food"]["name"] %></span>
+                <li>
+                    <span id="productName"><%= product["report"]["food"]["name"] %></span>
                   <form action='/myhomepage_breakfast' method='POST' id='addForm'>
                       <input name='amount' type='number'> 
                       <select name='measure'>
