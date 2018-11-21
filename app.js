@@ -104,7 +104,12 @@ app.post('/myhomepage_breakfast', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'breakfast'
-          data.report.date = new Date()
+        if(typeof(req.query.calendar) == 'undefined'){
+            data.report.date = new Date().toLocaleDateString()
+            } else {
+                data.report.date = req.query.calendar
+            }       
+    
           data.report.amount = req.body.amount
           data.report.measure = req.body.measure
 
@@ -139,7 +144,11 @@ app.post('/myhomepage_lunch', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'lunch'
-          data.report.date = new Date()
+                  if(typeof(req.query.calendar) == 'undefined'){
+            data.report.date = new Date().toLocaleDateString()
+            } else {
+                data.report.date = req.query.calendar
+            } 
           data.report.amount = req.body.amount
           data.report.measure = req.body.measure
           
@@ -174,7 +183,11 @@ app.post('/myhomepage_dinner', isLoggedIn, (req, res) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'dinner'
-          data.report.date = new Date()
+                  if(typeof(req.query.calendar) == 'undefined'){
+            data.report.date = new Date().toLocaleDateString()
+            } else {
+                data.report.date = req.query.calendar
+            } 
           data.report.amount = req.body.amount
           data.report.measure = req.body.measure
           Product.create(data, (err, product) => {
