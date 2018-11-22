@@ -21,7 +21,11 @@
           <span style='display: inline-block; position: absolute; left: 800px'>Protein  |</span>
           <span style='display: inline-block; position: absolute; left: 870px'>Carbs  |</span>
           <span style='display: inline-block; position: absolute; left: 930px'>Fat</span>
-          <div><button id='breakfast'>Add</button></div>
+          <div>
+            <form action='/breakfast' target='print_popup' method='GET' onsubmit="window.open('about:blank','print_popup','width=500,height=400');">
+                <button id='breakfast' name='date' value='<%=day%>'>Add</button>
+            </form>
+          </div>
                 <% if(typeof(day) == 'undefined'){%>
                     <% let pickedDate = new Date()%>
                     <% user.products.forEach(function(product){%>
@@ -385,6 +389,6 @@
         flatpickr("#calendar", {dateFormat: "m/d/Y"})
       </script>
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
-      <script type="text/javascript" src='javascript/addNewProduct.js'></script>
+      <!--<script type="text/javascript" src='javascript/addNewProduct.js'></script>-->
     </body>
 </html>

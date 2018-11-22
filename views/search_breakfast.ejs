@@ -7,18 +7,19 @@
         <body>
         <form action="/results_breakfast" method="GET">
             <input type="text" placeholder="product" name="product">
-            <input type="Submit">
+            <button name='date' value='<%= date%>'>Search</button>
         </form>
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
                 <li>
                     <span id="productName"><%= product["report"]["food"]["name"] %></span>
-                  <form action='/myhomepage_breakfast' method='POST' id='addForm'>
+                    <form action='/myhomepage_breakfast' method='POST' id='addForm'>
                       <input name='amount' type='number'> 
                       <select name='measure'>
                           <option value='g'>g</option>
                           <option value='oz'>oz</option>
                       </select>
+                      <input type='hidden' name='date' value='<%= date%>'>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
                   </form>
                     <div class="hidden" id="firstRow">
