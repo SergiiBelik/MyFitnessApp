@@ -37,33 +37,6 @@ app.get('/', (req, res) => {
     res.render('home.ejs')
 })
 
-app.get("/myhomepage", isLoggedIn, function(req, res){
-    let day
-    if(typeof(req.query.calendar) == 'undefined'){
-        day = new Date().toLocaleDateString()
-    } else {
-        day = req.query.calendar
-    }
-    User.findOne(req.user).populate('products').exec((err, user) => {
-        if(err){
-            console.log(err)
-        } else {
-            res.render('myHomePage.ejs', {user: user, day: day})
-            // console.log(user)
-        }
-    })
-})
-
-app.delete('/myhomepage', isLoggedIn, function(req, res){
-    Product.findByIdAndRemove(req.body.remove, (err) => {
-        if(err){
-            res.redirect('back')
-        } else {
-            res.redirect('back')
-        }
-    })
-})
-
 app.get('/register', (req, res) => {
     res.render('register.ejs')
 })
@@ -93,6 +66,33 @@ app.post('/login', passport.authenticate('local', {
 app.get('/logout', (req, res) => {
     req.logout()
     res.redirect('/')
+})
+
+app.get("/myhomepage", isLoggedIn, function(req, res){
+    let day
+    if(typeof(req.query.calendar) == 'undefined'){
+        day = new Date().toLocaleDateString()
+    } else {
+        day = req.query.calendar
+    }
+    User.findOne(req.user).populate('products').exec((err, user) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.render('myHomePage.ejs', {user: user, day: day})
+            // console.log(user)
+        }
+    })
+})
+
+app.delete('/myhomepage', isLoggedIn, function(req, res){
+    Product.findByIdAndRemove(req.body.remove, (err) => {
+        if(err){
+            res.redirect('back')
+        } else {
+            res.redirect('back')
+        }
+    })
 })
 
 app.post('/myhomepage_breakfast', isLoggedIn, (req, res) => {
@@ -139,17 +139,16 @@ app.post('/myhomepage_breakfast', isLoggedIn, (req, res) => {
 
 app.post('/myhomepage_lunch', isLoggedIn, (req, res) => {
     const ndbno = req.body.add
+    const date = req.body.date
     const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
     request(url, (error, response, body) => {
       if(!error && response.statusCode == 200){
           const data = JSON.parse(body)
           data.report.when = 'lunch'
-          console.log('date is: ' + req.params.calendar)
-          console.log('the type of req.query.calendar is: ' + typeof(req.params.calendar))
-            if(typeof(req.query.calendar) == 'undefined'){
+            if(typeof(date) == 'undefined'){
                 data.report.date = new Date().toLocaleDateString()
             } else {
-                data.report.date = req.query.calendar
+                data.report.date = date
             } 
           data.report.amount = req.body.amount
           data.report.measure = req.body.measure
@@ -164,7 +163,7 @@ app.post('/myhomepage_lunch', isLoggedIn, (req, res) => {
                         if(err){
                             console.log(err)
                         } else {
-                            res.redirect('/lunch' )
+                            res.render('search_lunch.ejs', {date: date} )
                             // console.log(data)
                         }
                     })
@@ -180,40 +179,12 @@ app.post('/myhomepage_lunch', isLoggedIn, (req, res) => {
 
 app.post('/myhomepage_dinner', isLoggedIn, (req, res) => {
     const ndbno = req.body.add
-    const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
-    request(url, (error, response, body) => {
-      if(!error && response.statusCode == 200){
-          const data = JSON.parse(body)
-          data.report.when = 'dinner'
-                  if(typeof(req.query.calendar) == 'undefined'){
-            data.report.date = new Date().toLocaleDateString()
-            } else {
-                data.report.date = req.query.calendar
-            } 
-          data.report.amount = req.body.amount
-          data.report.measure = req.body.measure
-          Product.create(data, (err, product) => {
-              User.findOne(req.user, (err, user) => {
-                if(err){
-                    console.log(err)
-                } else {
-                    user.products.push(product)
-                    user.save((err, data) => {
-                        if(err){
-                            console.log(err)
-                        } else {
-                            res.redirect('/dinner' )
-                            // console.log(data)
-                        }
-                    })
-                    }
-              })
-          })
-      } else {
-          console.log(error)
-      }
-
-    })
+    const date = req.body.date
+    const amount = req.body.amount
+    const measure = req.body.measure
+    const user = req.body.user
+    const dinner = 'dinner'
+    addProductToTheDB(dinner, ndbno, date, amount, measure, user, res)
 })
 
 app.get('/breakfast', isLoggedIn, (req, res) => {
@@ -222,17 +193,14 @@ app.get('/breakfast', isLoggedIn, (req, res) => {
 })
 
 app.get('/lunch', isLoggedIn, (req, res) => {
-    console.log(req.query.date)
-    res.render('search_lunch.ejs')
+    let date = req.query.date
+    res.render('search_lunch.ejs', {date: date})
 })
 
 app.get('/dinner', isLoggedIn, (req, res) => {
-    res.render('search_dinner.ejs')
+    let date = req.query.date
+    res.render('search_dinner.ejs', {date: date})
 })
-
-// app.get('/productsAdded', (req, res) => {
-//     res.render('productsAdded.ejs')
-// })
 
 app.get('/results_breakfast', isLoggedIn, (req, res) => {
     const query = req.query.product
@@ -241,17 +209,17 @@ app.get('/results_breakfast', isLoggedIn, (req, res) => {
     let urlList = []
     let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
     if(typeof(req.query.product) != 'undefined'){
-    request(firstURL, (error, response, body) => {
-      if(!error && response.statusCode == 200){
-        const data = JSON.parse(body)
-        if(data.errors && data.errors.error != 'undefined'){
-            res.render('productNotFound.ejs', {data: data, redirect: '/breakfast'})
-        } else {
-        //for each product lookup nutrition data
-        for(let i = 0; i < data['list']['item'].length; i++){
-          urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
-        }
-        combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
+        request(firstURL, (error, response, body) => {
+            if(!error && response.statusCode == 200){
+                const data = JSON.parse(body)
+                if(data.errors && data.errors.error != 'undefined'){
+                    res.render('productNotFound.ejs', {data: data, redirect: '/breakfast'})
+                } else {
+                //for each product lookup nutrition data
+                for(let i = 0; i < data['list']['item'].length; i++){
+                    urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
+                }
+            combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
             .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
                 res.render('search_breakfast.ejs', {items: response, date: date})
                 }, (error) => {
@@ -265,23 +233,24 @@ app.get('/results_breakfast', isLoggedIn, (req, res) => {
 
 app.get('/results_lunch', isLoggedIn, (req, res) => {
     const query = req.query.product
+    const date = req.query.date
     let items = []
     let urlList = []
     let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
     if(typeof(req.query.product) != 'undefined'){
-    request(firstURL, (error, response, body) => {
-      if(!error && response.statusCode == 200){
-        const data = JSON.parse(body)
-        if(data.errors && data.errors.error != 'undefined'){
-            res.render('productNotFound.ejs', {data: data, redirect: '/lunch'})
-        } else {
-        //for each product lookup nutrition data
-        for(let i = 0; i < data['list']['item'].length; i++){
-          urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
-        }
-        combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
+        request(firstURL, (error, response, body) => {
+            if(!error && response.statusCode == 200){
+                const data = JSON.parse(body)
+                if(data.errors && data.errors.error != 'undefined'){
+                    res.render('productNotFound.ejs', {data: data, redirect: '/lunch'})
+                }else{
+                     //for each product lookup nutrition data
+                     for(let i = 0; i < data['list']['item'].length; i++){
+                        urlList.push('https://api.nal.usda.gov/ndb/reports/?ndbno=' + data['list']['item'][i].ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F')
+                    }
+            combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
             .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
-                res.render('search_lunch.ejs', {items: response})
+                res.render('search_lunch.ejs', {items: response, date: date})
                 }, (error) => {
                     console.log(error)
                 })
@@ -293,6 +262,7 @@ app.get('/results_lunch', isLoggedIn, (req, res) => {
 
 app.get('/results_dinner', isLoggedIn, (req, res) => {
     const query = req.query.product
+    const date = req.query.date
     let items = []
     let urlList = []
     let firstURL = 'https://api.nal.usda.gov/ndb/search/?format=json&q='+query+'&ds=Standard%20Reference&sort=n&max=25&offset=0&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
@@ -309,7 +279,7 @@ app.get('/results_dinner', isLoggedIn, (req, res) => {
         }
         combinePromises(urlList)//running API requests using URLs from firstURL array and creating new array from resulting objects
             .then((response) => {//once array of resulting objects is ready we render this array to results.ejs file
-                res.render('search_dinner.ejs', {items: response})
+                res.render('search_dinner.ejs', {items: response, date: date})
                 }, (error) => {
                     console.log(error)
                 })
@@ -324,6 +294,43 @@ function isLoggedIn(req, res, next){
         return next()
     }
     res.redirect('/login')
+}
+
+function addProductToTheDB(when, ndbno, date, amount, measure, user, res){
+    const url = 'https://api.nal.usda.gov/ndb/reports/?ndbno=' + ndbno + '&format=json&api_key=FlFZ5TIYS2lxli2VllGPoiJXRCvvj9OQ0RMit78F'
+    request(url, (error, response, body) => {
+      if(!error && response.statusCode == 200){
+          const data = JSON.parse(body)
+          data.report.when = when
+                  if(typeof(date) == 'undefined'){
+            data.report.date = new Date().toLocaleDateString()
+            } else {
+                data.report.date = date
+            } 
+          data.report.amount = amount
+          data.report.measure = measure
+          Product.create(data, (err, product) => {
+              User.findOne(user, (err, user) => {
+                if(err){
+                    console.log(err)
+                } else {
+                    user.products.push(product)
+                    user.save((err, data) => {
+                        if(err){
+                            console.log(err)
+                        } else {
+                            res.render('search_' + when, {date: date} )
+                            // console.log(data)
+                        }
+                    })
+                    }
+              })
+          })
+      } else {
+          console.log(error)
+      }
+
+    })
 }
     
 app.listen(process.env.PORT, process.env.IP, () => console.log('Fitness app has been started!'))
