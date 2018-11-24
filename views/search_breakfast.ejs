@@ -12,7 +12,9 @@
         <% if(typeof(items) != 'undefined') {%>
         <% items.forEach(function(product){ %>
                 <li>
-                    <span id="productName"><%= product["report"]["food"]["name"] %></span>
+                    <div class = 'productName'>
+                        <%= product["report"]["food"]["name"] %>
+                    </div>
                     <form action='/myhomepage_breakfast' method='POST' id='addForm'>
                       <input name='amount' type='number'> 
                       <select name='measure'>
@@ -21,7 +23,7 @@
                       </select>
                       <input type='hidden' name='date' value='<%= date%>'>
                       <button id='add' name='add' value='<%= product["report"]["food"]["ndbno"] %>'>Add</button>
-                  </form>
+                    </form>
                     <div class="hidden" id="firstRow">
                         <div id="nutrname">Nutrient</div>  
                         <span id="nutrmeasure">Per 100g</span> 
