@@ -182,7 +182,7 @@ app.post('/myhomepage_dinner', isLoggedIn, (req, res) => {
     const date = req.body.date
     const amount = req.body.amount
     const measure = req.body.measure
-    const user = req.body.user
+    const user = req.user
     const dinner = 'dinner'
     addProductToTheDB(dinner, ndbno, date, amount, measure, user, res)
 })
@@ -315,11 +315,13 @@ function addProductToTheDB(when, ndbno, date, amount, measure, user, res){
                     console.log(err)
                 } else {
                     user.products.push(product)
+                    console.log(user)
                     user.save((err, data) => {
                         if(err){
                             console.log(err)
                         } else {
-                            res.render('search_' + when, {date: date} )
+                            console.log('2  ' + data)
+                            res.render('search_' + when+'.ejs', {date: date} )
                             // console.log(data)
                         }
                     })
