@@ -1,11 +1,25 @@
 <div id='dinner'>
           <h2 style='display: inline-block'>Dinner</h2>
-          <span style='display: inline-block; position: absolute; left: 800px'>Protein  |</span>
-          <span style='display: inline-block; position: absolute; left: 870px'>Carbs  |</span>
-          <span style='display: inline-block; position: absolute; left: 930px'>Fat</span>
-            <form action='/dinner' target='print_popup' method='GET' onsubmit="window.open('about:blank','print_popup','width=800,height=400');">
-                <button id='dinner' name='date' value='<%=day%>'>Add</button>
-            </form>
+          <form id='addForm' action='/dinner' target='print_popup' method='GET' onsubmit="window.open('about:blank','print_popup','width=800,height=400');">
+                <button id='dinner' name='date' value='<%=day%>' class = 'btn btn-primary'>Add</button>
+          </form>
+          <table style='display: inline-block; position: absolute; left: 800px'>
+            <thead>
+              <tr>
+                <th id='p'>Protein |</th>
+                <th id='c'>Carbs |</th>
+                <th id='f'>Fat</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+          <hr>
+          <!--<span style='display: inline-block; position: absolute; left: 800px'>Protein  |</span>-->
+          <!--<span style='display: inline-block; position: absolute; left: 870px'>Carbs  |</span>-->
+          <!--<span style='display: inline-block; position: absolute; left: 930px'>Fat</span>-->
+            
                     <% let pickedDate = new Date(day)%>
                     
                     <% user.products.forEach(function(product){%>
@@ -17,7 +31,7 @@
                                   </div>
 
                                   <form action='/myhomepage?_method=DELETE' method='POST' id='addForm'>
-                                    <button value='<%= product._id%>' name='remove'>Remove</button>
+                                    <button value='<%= product._id%>' name='remove' class='btn btn-sm btn-danger'>Remove</button>
                                   </form>
                                   <h3 id='addForm'>
                                     <% product.report.food.nutrients.forEach(nutrient => {%>

@@ -6,7 +6,7 @@ const listCollapse = () => {
         		childNode.addEventListener('click', function() {
             		var childList = this.parentElement.children;
                     for(var j = 0; j< childList.length;j++){
-                        if(childList[j].className != 'productName'){
+                        if(childList[j].className != 'productName' && childList[j].id != 'nutrientsLine'){
                             var currentState = childList[j].style.display;
                             var tagName = childList[j].tagName;
                             var tagId = childList[j].id;

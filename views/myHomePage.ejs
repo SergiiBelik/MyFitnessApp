@@ -1,27 +1,40 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Fitness App</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
       <link rel="stylesheet" href="/css/main.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Inconsolata|Indie+Flower" rel="stylesheet">
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
     <body>
-      <h1>Home Page</h1>
-      <h2><%= day%></h2>
-      <div>
-          <a href='/logout' style="position: absolute;top: 0px;right: 10px;">Sign out</a>
-      </div>
-      <form action='/myhomepage' method='GET'>
-        <input type='text' name='calendar' id='calendar' placeholder='Pick a date'>
-        <input type='Submit' value='GO!'>
-      </form>
+      <nav class= 'navbar navbar-default'>
+        <div class= 'navbar-header'>
+          <a href='#' class='navbar-brand'>FitnessApp</a>
+        </div>
+        <ul class = 'nav navbar-nav navbar-right'>
+          <li>
+            <a href='/logout'>Sign out</a>
+          </li>
+          
+        </ul>
+      </nav>
+
+          <h1>Home Page - <%= day%></h1>
+
+          <form action='/myhomepage' method='GET'>
+            <input type='text' name='calendar' id='calendar' placeholder='Pick a date'>
+            <button class="btn btn-outline-dark btn-sm">GO!</button>
+          </form>
+
+      
 
                 <% include partials/breakfast.ejs%>
                 <% include partials/lunch.ejs%>
                 <% include partials/dinner.ejs%>
 
-
+      
       <script>flatpickr("#calendar", {dateFormat: "m/d/Y"})</script>
       <script type="text/javascript" src="javascript/listcollapse.js"></script>
     </body>
