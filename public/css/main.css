@@ -9,6 +9,15 @@ body{
     /*width: 80%;*/
 }
 
+.section {
+    margin-top: 20px;
+}
+
+.container {
+    max-width: 500px;
+    margin-top: 10%;
+}
+
 h1 {
     font-family: 'Indie Flower', cursive;
     font-size: 60px;
@@ -21,8 +30,18 @@ h2 {
     margin-top: 20px;
 }
 
+h4[id='login'] {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+button[id='login']{
+    width: 100%;
+}
+
 hr {
-    margin: 0 0 20px 0;
+    margin: 5px 0 15px 0;
     width: 50%;
     border: 1px solid rgba(0, 0, 0, 0.2);
     height: 0;
@@ -56,21 +75,36 @@ hr {
     margin-right: 20px;
 }
 
-#productName{
-    display: inline;
-    /*width: 100px;*/
-    margin-right: 20px;
+#productLine{
+    width: 100%;
+    /*margin-right: 20px;*/
 }
 
-.productName{
-    display: inline;
-    /*width: 100px;*/
-    margin-right: 20px;
+#noMargin {
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
-span{
+#vPipe {
+    position: absolute;
+    right: 0px;
+}
+
+/*.productName{*/
+/*    display: inline-block;*/
+    /*width: 100px;*/
+    /*margin-right: 20px;*/
+/*}*/
+
+
+span[id = 'nutrmeasure']{
     display: inline-block;
     width: 100px;
     margin-right: 20px;
+}
+
+span[id = 'brLnDn']{
+    font-size: 35px;
 }
 
 .hidden{
@@ -82,10 +116,10 @@ span{
 #ndbno{
     display: none;
 }
-#nutrientsLine {
-    width: 50px;
-    text-align: center;
-}
-span[class='nutrientsLine']{
-    margin: 0 10px 0 10px;
-}
+/*#nutrientsLine {*/
+/*    width: 50px;*/
+/*    text-align: center;*/
+/*}*/
+/*span[class='nutrientsLine']{*/
+/*    margin: 0 10px 0 10px;*/
+/*}*/

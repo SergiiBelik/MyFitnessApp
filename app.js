@@ -52,13 +52,13 @@ app.post('/register', (req, res) => {
     })
 })
 
-app.get('/login', (req, res) => {
-    res.render('login.ejs')
-})
+// app.get('/login', (req, res) => {
+//     res.render('login.ejs')
+// })
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/myhomepage',
-    failureRedirect: '/login'
+    failureRedirect: '/'
 }), (req, res) => {
 })
 
@@ -163,7 +163,7 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next()
     }
-    res.redirect('/login')
+    res.redirect('/')
 }
 
 function getProductResults(dinner, query, date, res){

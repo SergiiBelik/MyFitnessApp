@@ -1,24 +1,33 @@
-<div id='breakfast'>
-          <h2 style='display: inline-block'>Breakfast</h2>
+<div id='breakfast' class = 'section'>
+  <div class = 'row'>
+    <div class = 'col-md-6'>
+      <span id = 'brLnDn'>Breakfast</span>
           <form id='addForm' action='/breakfast' target='print_popup' method='GET' onsubmit="window.open('about:blank','print_popup','width=800,height=400');">
             <button id='breakfast' name='date' value='<%=day%>' class = 'btn btn-primary'>Add</button>
           </form>
-          <table style='display: inline-block; position: absolute; left: 800px'>
-            <thead>
-              <tr>
-                <th id='p'>Protein |</th>
-                <th id='c'>Carbs |</th>
-                <th id='f'>Fat</th>
-              </tr>
-            </thead>
-            <tbody>
+    </div>
+    <div class = 'col-md-3'>
+      <div class = 'row'>
+        <div class = 'col-sm-3' id = 'noMargin'>
+          Protein<span id = 'vPipe'>|</span>
+        </div>
+        <div class = 'col-sm-3' id = 'noMargin'>
+          Carbs<span id = 'vPipe'>|</span>
+        </div>
+        <div class = 'col-sm-3' id = 'noMargin'>
+          Fat<span id = 'vPipe'>|</span>
+        </div>
+        <div class = 'col-sm-3' id = 'noMargin'>
+          <strong>Calories</strong>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class='row'>
+    <hr class = 'col-md-9'>
+  </div>
 
-            </tbody>
-          </table>
-          <hr>
-          <!--<span style='display: inline-block; position: absolute; left: 800px'>Protein  |</span>-->
-          <!--<span style='display: inline-block; position: absolute; left: 870px'>Carbs  |</span>-->
-          <!--<span style='display: inline-block; position: absolute; left: 930px'>Fat</span>-->
 
                     <% let pickedDate = new Date(day)%>
                     
@@ -26,41 +35,48 @@
                         <% let d = new Date(product.report.date)%>
                         <% if(product.report.when == 'breakfast' && (d.getDate() == pickedDate.getDate() && d.getMonth() == pickedDate.getMonth() && d.getYear() == pickedDate.getYear())){ %>
                             <li>
-                                
-                              <div class = 'productName'>
-                                <%= product["report"]["food"]["name"] %> - <%=product.report.amount%><%=product.report.measure%>
-                              </div>
-                              <form action='/myhomepage?_method=DELETE' method='POST' id='addForm'>
-                                <button value='<%= product._id%>' name='remove' class='btn btn-sm btn-danger'>Remove</button>
-                              </form>
-                              <table style='display: inline-block; position: absolute; left: 800px'>
-                                <tbody>
-                                    <tr>
-                                      <td id = 'nutrientsLine'>
+                                <div class = 'row d-inline-flex' id = 'productLine'>
+                                  <div class = 'col-md-6'>
+                                    <%= product["report"]["food"]["name"] %> - <%=product.report.amount%><%=product.report.measure%>
+                              
+                                    <form action='/myhomepage?_method=DELETE' method='POST' id='addForm'>
+                                      <button value='<%= product._id%>' name='remove' class='btn btn-sm btn-danger'>Remove</button>
+                                    </form>
+                                  </div>
+                                  <div class = 'col-md-3 productName'>
+                                    <div class = 'row'>
+                                      <div class = 'col-sm-3' id = 'noMargin'>
                                         <% product.report.food.nutrients.forEach(nutrient => {%>
                                           <% if(nutrient.nutrient_id == '203'){%>
-                                              <span class='nutrientsLine'><%= Math.floor(nutrient.value * (product.report.amount/100)) %></span>
+                                              <span class = 'protein'><%= Math.floor(nutrient.value * (product.report.amount/100)) %></span>
                                           <% }%>
                                         <% })%>
-                                      </td>
-                                      <td>
+                                      </div>
+                                      <div class = 'col-sm-3' id = 'noMargin'>
                                         <% product.report.food.nutrients.forEach(nutrient => {%>
                                           <% if(nutrient.nutrient_id == '205'){%>
-                                              <%= Math.floor(nutrient.value * (product.report.amount/100)) %>
+                                              <span class = 'carbs'><%= Math.floor(nutrient.value * (product.report.amount/100)) %></span>
                                           <% }%>
                                         <% })%>
-                                      </td>
-                                      <td>
+                                      </div>
+                                      <div class = 'col-sm-3' id = 'noMargin'>
                                         <% product.report.food.nutrients.forEach(nutrient => {%>
                                           <% if(nutrient.nutrient_id == '204'){%>
-                                              <%= Math.floor(nutrient.value * (product.report.amount/100)) %>
+                                              <span class = 'fat'><%= Math.floor(nutrient.value * (product.report.amount/100)) %></span>
                                           <% }%>
                                         <% })%>
-                                      </td>
+                                      </div>
+                                      <div class = 'col-sm-3' id = 'noMargin'>
+                                        <% product.report.food.nutrients.forEach(nutrient => {%>
+                                          <% if(nutrient.nutrient_id == '208'){%>
+                                              <span class = 'energy'><%= Math.floor(nutrient.value * (product.report.amount/100)) %></span>
+                                          <% }%>
+                                        <% })%>
+                                      </div>
+                                    </div>
+                                  </div>      
+                              </div>
 
-                                    </tr>
-                                </tbody>
-                              </table>
                                   
                               <div class="hidden" id="firstRow">
                                   <div id="nutrname">
@@ -70,9 +86,9 @@
                                     Per 100g
                                   </span> 
                                   <%product["report"]["food"]["nutrients"][0]["measures"].forEach(function(measure){ %>
-                                      <span><%= measure.qty %> <%= measure.label %></span>
+                                      <span id="nutrmeasure"><%= measure.qty %> <%= measure.label %></span>
                                   <% }) %>
-                                  <span>Per <%=product.report.amount%><%=product.report.measure%></span>
+                                  <span id="nutrmeasure">Per <%=product.report.amount%><%=product.report.measure%></span>
                                   
                               </div>
                                   <% product["report"]["food"]["nutrients"].forEach(function(nutrient){ %>
@@ -80,7 +96,7 @@
                                       <p id="nutrname"><%= nutrient.name %></p>
                                       <span id="nutrmeasure"><%= nutrient.value %><%= nutrient.unit %></span>
                                       <% nutrient["measures"].forEach(function(measure){ %>
-                                      <span><%= measure.value%><%= measure.eunit%></span>
+                                      <span id="nutrmeasure"><%= measure.value%><%= measure.eunit%></span>
                                       <% }) %>
                                       <span id="nutrmeasure"><%= Math.floor(nutrient.value * (product.report.amount/100)) %><%= nutrient.unit %></span>
                                   </div>
