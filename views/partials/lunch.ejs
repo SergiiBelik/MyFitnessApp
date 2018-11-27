@@ -3,7 +3,7 @@
     <div class = 'col-md-6'>
       <span id = 'brLnDn'>Lunch</span>
           <form id='addForm' action='/lunch' target='print_popup' method='GET' onsubmit="window.open('about:blank','print_popup','width=800,height=400');">
-            <button id='lunch' name='date' value='<%=day%>' class = 'btn btn-primary'>Add</button>
+            <button id='lunch' name='date' value='<%=day%>' class = 'addBtn'><i class='far fa-plus-square'></i></button>
           </form>
     </div>
     <div class = 'col-md-3'>
@@ -37,10 +37,10 @@
                             <li>
                                 <div class = 'row d-inline-flex' id = 'productLine'>
                                   <div class = 'col-md-6'>
-                                    <%= product["report"]["food"]["name"] %> - <%=product.report.amount%><%=product.report.measure%>
+                                    <span class='clickable'><%= product["report"]["food"]["name"] %> - <%=product.report.amount%><%=product.report.measure%></span>
                               
                                     <form action='/myhomepage?_method=DELETE' method='POST' id='addForm'>
-                                      <button value='<%= product._id%>' name='remove' class='btn btn-sm btn-danger'>Remove</button>
+                                      <button value='<%= product._id%>' name='remove' class = 'removeBtn'><i class='far fa-trash-alt'></i></button>
                                     </form>
                                   </div>
                                   <div class = 'col-md-3 productName'>
