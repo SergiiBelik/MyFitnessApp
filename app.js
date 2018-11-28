@@ -11,13 +11,15 @@ const User = require('./models/user.js')
 const combinePromises = require('./models/combinePromises.js')
 const flatpickr = require('flatpickr')
 const methodOverride = require('method-override')
+const flash = require('connect-flash')
 mongoose.connect('mongodb://localhost/my_fitness_app')
 
 
-app.use(express.static('public'))
+app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
+
 
 //PASSPORT CONFIGURATION
 app.use(require('express-session')({
@@ -25,12 +27,18 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }))
+
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
-
+app.use(function(req, res, next){
+    res.locals.error = req.flash('error')
+    res.locals.success = req.flash('success')
+    next()
+})
 
 app.get('/', (req, res) => {
     res.render('home.ejs')
@@ -64,6 +72,7 @@ app.post('/login', passport.authenticate('local', {
 
 app.get('/logout', (req, res) => {
     req.logout()
+    req.flash('success', "You have successfully signed out!")
     res.redirect('/')
 })
 
@@ -163,6 +172,7 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next()
     }
+    req.flash('error', 'You need to sign in first')
     res.redirect('/')
 }
 

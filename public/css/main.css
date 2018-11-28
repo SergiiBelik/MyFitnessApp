@@ -150,12 +150,18 @@ hr[id='search'] {
     padding: 0; 
     font-size: 20px; 
     cursor: pointer; 
+    transition: 0.1s linear;
+    opacity: 0.5;
 }
 
 .addBtn:hover {
     font-size: 30px;
+    opacity: 1;
 }
 
+.noMarginTop{
+    margin-top: 10px;
+}
 
 /*.productName{*/
 /*    display: inline-block;*/

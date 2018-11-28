@@ -1,6 +1,19 @@
 <% include partials/header.ejs %>
 
-        <div class = 'container'>
+
+<div class = 'container'>
+    <%if(error && error.length > 0){%>
+      <div class='alert alert-danger' role='alert'><%=error%></div>
+  <% }  %>
+    <%if(success && success.length > 0){%>
+    <div class='alert alert-success' role='alert'><%=success%></div>
+    <% }  %>
+</div>
+
+
+    
+
+        <div class = 'container noMarginTop'>
             <h4 id = 'login'>Enter The World Of Calories</h4>
             <form action='/login' method='POST'>
               <div class="form-group">
