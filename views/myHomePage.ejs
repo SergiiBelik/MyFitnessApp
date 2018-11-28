@@ -9,7 +9,7 @@
     </head>
     <body id='homePage'>
 
-
+    
       <nav class= 'navbar navbar-default' id = 'noPaddingLeft'>
         <div class= 'navbar-header'>
           <a href='#' class='navbar-brand'>Welcome to MyFitnessApp</a>
@@ -22,7 +22,11 @@
         </ul>
       </nav>
 
+      <% if(success && success.length > 0){%>
+          <h1><%= success %>: <%= day%></h1>
+      <% } else {%>
           <h1><%=user.username%> : <%= day%></h1>
+          <% }%>
 
           <form action='/myhomepage' method='GET'>
             <input type='text' name='calendar' id='calendar' placeholder='Pick a date'>

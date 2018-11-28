@@ -52,9 +52,11 @@ app.post('/register', (req, res) => {
     User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
         if(err){
             console.log(err)
-            return res.render('register.ejs')
+            req.flash('error', err.message)
+            return res.redirect('/register')
         }
         passport.authenticate('local')(req, res, () => {
+                req.flash('success', 'Welcome to MyFitnessApp ' + user.username + ', today is')
                 res.redirect('/myhomepage')
             })
     })
