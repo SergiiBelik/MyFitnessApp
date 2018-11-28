@@ -13,8 +13,7 @@ const flatpickr = require('flatpickr')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
 
-// mongoose.connect('mongodb://localhost/my_fitness_app')
-mongoose.connect('mongodb://sergii:vaskakrugliak1@ds119394.mlab.com:19394/my_fitness_app')
+mongoose.connect(process.env.DATABASEURL)
 
 
 app.use(express.static(__dirname + '/public'))
