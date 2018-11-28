@@ -69,7 +69,8 @@ app.post('/register', (req, res) => {
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/myhomepage',
-    failureRedirect: '/'
+    failureRedirect: '/',
+    failureFlash: true
 }), (req, res) => {
 })
 
